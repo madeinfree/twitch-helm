@@ -1,11 +1,10 @@
-require('dotenv').config();
 require('colors');
 const open = require('open');
 const keypress = require('keypress');
 const axios = require('axios').default;
 const R = require('ramda');
 
-const { TWITCH_CLIENT_ID } = process.env;
+const TWITCH_CLIENT_ID = 'pl3x96lxedtdyvf3cmyai9fu4mod62';
 
 const createRequest = axios.create({
   method: 'GET',
