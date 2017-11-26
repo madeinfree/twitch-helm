@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 require('colors');
 const open = require('open');
 const keypress = require('keypress');
