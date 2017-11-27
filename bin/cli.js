@@ -76,6 +76,10 @@ const showLiveListView = _ => {
 const changeMode = type => {
   selectMode = type;
 };
+const reset = () => {
+  currentPage = 1;
+  currentShowLiveListSelectIndex = 0;
+};
 const isGameMode = () => selectMode === GAME_MODE.GAMELIST;
 const isLiveMode = () => selectMode === GAME_MODE.LIVELIST;
 const exitProcess = () => process.exit();
@@ -113,9 +117,11 @@ process.stdin.on('keypress', async (ch, key) => {
           currentSelectIndex = currentSelectIndex + 1;
         }
       } else if (isLiveMode()) {
+        if (currentShowLiveListSelectIndex >= 99) break;
         let normalizeListStreamListLen = R.length(normalizeListStreamList);
         if (currentShowLiveListSelectIndex + 1 > currentPage * 10 - 1) {
-          currentShowLiveListSelectIndex = currentPage * 10;
+          currentPage = currentPage + 1;
+          currentShowLiveListSelectIndex = currentPage * 10 - 10;
         } else {
           currentShowLiveListSelectIndex = currentShowLiveListSelectIndex + 1;
         }
@@ -133,9 +139,11 @@ process.stdin.on('keypress', async (ch, key) => {
           currentSelectIndex = currentSelectIndex - 1;
         }
       } else if (isLiveMode()) {
+        if (currentShowLiveListSelectIndex === 0) break;
         let normalizeListStreamListLen = R.length(normalizeListStreamList);
-        if (currentShowLiveListSelectIndex - 1 < 0) {
-          currentShowLiveListSelectIndex = normalizeListStreamListLen - 1;
+        if (currentShowLiveListSelectIndex - 1 < currentPage * 10 - 10) {
+          currentPage = currentPage - 1;
+          currentShowLiveListSelectIndex = currentPage * 10 - 1;
         } else {
           currentShowLiveListSelectIndex = currentShowLiveListSelectIndex - 1;
         }
@@ -172,6 +180,7 @@ process.stdin.on('keypress', async (ch, key) => {
      */
     case KEY_LEFT: {
       changeMode(GAME_MODE.GAMELIST);
+      reset();
       break;
     }
     /**
