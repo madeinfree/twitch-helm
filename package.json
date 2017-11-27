@@ -11,12 +11,17 @@
   "author": "Whien_Liou <sal95610@gmail.com>",
   "dependencies": {
     "axios": "^0.17.1",
+    "cfonts": "^1.1.3",
+    "cli-table2": "^0.2.0",
     "colors": "^1.1.2",
     "dotenv": "^4.0.0",
     "keypress": "^0.2.1",
     "open": "^0.0.5",
     "ramda": "^0.25.0"
   },
-  "keywords": ["cli", "twitch"],
+  "keywords": [
+    "cli",
+    "twitch"
+  ],
   "license": "MIT"
 }
