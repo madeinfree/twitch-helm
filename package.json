@@ -1,6 +1,6 @@
 {
   "name": "twitch-helm",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "bin": {
     "twitch": "./bin/cli.js"
   },
