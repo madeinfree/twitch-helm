@@ -1,12 +1,12 @@
 {
-  "name": "twitch-stream-cli",
-  "version": "2.0.0",
+  "name": "twitch-helm",
+  "version": "0.2.0",
   "bin": {
     "twitch": "./bin/cli.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/madeinfree/twitch-stream-cli"
+    "url": "https://github.com/madeinfree/twitch-helm"
   },
   "author": "Whien_Liou <sal95610@gmail.com>",
   "dependencies": {
@@ -20,9 +20,6 @@
     "ramda": "^0.25.0",
     "redux": "^3.7.2"
   },
-  "keywords": [
-    "cli",
-    "twitch"
-  ],
+  "keywords": ["cli", "twitch"],
   "license": "MIT"
 }
