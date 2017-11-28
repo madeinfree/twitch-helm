@@ -93,11 +93,12 @@ const exitProcess = () => process.exit();
  */
 program
   .version('0.2.0')
-  .option('-lan, --language [value]', 'choose live stream language')
+  .option('--language [value]', 'choose live stream language')
+  .option('--limit <n>', 'search limit, default: 10')
   .parse(process.argv);
-const language = util.isString(program.language)
-  ? `&language=${program.language}`
-  : '';
+const { language, limit = 10 } = program;
+const languageParams = util.isString(language) ? `&language=${language}` : '';
+const limitParams = `?first=${limit}`;
 
 /**
  * initial keypress
@@ -132,7 +133,8 @@ process.stdin.on('keypress', async (ch, key) => {
           changeGameSelectIndex(getState('currentGameSelectIndex') + 1);
         }
       } else if (isLiveMode()) {
-        if (getState('currentLiveSelectIndex') >= 99) break;
+        if (getState('currentLiveSelectIndex') >= parseInt(limit, 10) - 1)
+          break;
         if (
           getState('currentLiveSelectIndex') + 1 >
           getState('currentPage') * 10 - 1
@@ -178,7 +180,10 @@ process.stdin.on('keypress', async (ch, key) => {
         const liveStreamResponse = await fetchLiveStream(
           getState('streamList'),
           getState('currentGameSelectIndex'),
-          language
+          {
+            languageParams,
+            limitParams
+          }
         );
         changeMode(GAME_MODE.LIVELIST);
         cacheLiveList(liveStreamResponse);
@@ -209,7 +214,7 @@ process.stdin.on('keypress', async (ch, key) => {
       if (isGameMode()) {
         break;
       }
-      if (getState('currentPage') + 1 > 10) {
+      if (getState('currentPage') + 1 > Math.ceil(limit / 10)) {
         changeCurrentPage(0);
         changeLiveSelectIndex(0);
       } else {
@@ -226,8 +231,8 @@ process.stdin.on('keypress', async (ch, key) => {
         break;
       }
       if (getState('currentPage') - 1 < 1) {
-        changeCurrentPage(11);
-        changeLiveSelectIndex(90);
+        changeCurrentPage(Math.ceil(limit / 10) + 1);
+        changeLiveSelectIndex(parseInt(limit, 10) - 1);
       } else {
         changeLiveSelectIndex(getState('currentLiveSelectIndex') - 10);
       }

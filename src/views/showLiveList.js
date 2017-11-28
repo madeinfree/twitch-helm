@@ -10,7 +10,9 @@ const showLiveList = ({
   currentShowLiveListSelectIndex,
   currentPage
 }) => {
-  console.log(`| 共 ${liveList.length / 10} 頁 | 當前頁數 ${currentPage} |`);
+  console.log(
+    `| 共 ${Math.ceil(liveList.length / 10)} 頁 | 當前頁數 ${currentPage} |`
+  );
   let liveTable = new Table({
     head: ['遊戲標題', '語言', '觀看人數'],
     style: {

@@ -7,12 +7,16 @@ const { createRequest, createUserRequest } = require('./createRequest');
  * @param {array} streamList
  * @param {number} currentSelectIndex
  */
-const fetchLiveStream = (streamList, currentGameSelectIndex, language) => {
+const fetchLiveStream = (
+  streamList,
+  currentGameSelectIndex,
+  { languageParams, limitParams }
+) => {
   return new Promise((resolve, reject) => {
     createRequest({
-      url: `/streams?first=100&game_id=${
+      url: `/streams${limitParams}&game_id=${
         streamList[currentGameSelectIndex]['_id']
-      }${language}`
+      }${languageParams}`
     })
       .then(response => {
         const { data: liveListResponse } = response;
@@ -37,13 +41,14 @@ const fetchLiveStreamUser = (currentShowLiveListSelectIndex, liveList) => {
           'stream',
           'channel'
         ])(response);
-        open(url);
-        resolve({
-          url,
-          name,
-          display_name,
-          language
-        });
+        open(url, () =>
+          resolve({
+            url,
+            name,
+            display_name,
+            language
+          })
+        );
       })
       .catch(error => reject('Twitch Stream CLI: ', error));
   });
