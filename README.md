@@ -1,15 +1,15 @@
-# Twitch Stream CLI
+# Twitch Helm
 
 Easily to use terminal command line to search twitch live stream, and choose
 your love streamer, enjoy!
 
 # ScreenShot
 
-### Find your live stream game.
+### Find your live stream games.
 
 ![screenShot](https://i.imgur.com/DmHMSnK.png)
 
-### Choose your live stream user
+### Choose your live stream player
 
 ![search](https://i.imgur.com/16l7nFs.png)
 
@@ -24,10 +24,14 @@ your love streamer, enjoy!
 # Uses
 
 ```command
-$ npm install twitch-stream-cli -g
+$ npm install twitch-helm -g
 $ twitch
+```
 
-# enjoy
+# Alias
+
+```
+$ alias twc=twitch
 ```
 
 # License
