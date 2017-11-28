@@ -43,13 +43,22 @@ twitch [,...options]
 
 # Options
 
-### --language, -lan
+### --language
 
 use language option can specified stream player language and default is total
 stream player.
 
 ```command
 twitch --language en
+```
+
+### --limit
+
+search limit range.
+
+```command
+# search only first 20
+twitch --limit 20
 ```
 
 # Contributing
