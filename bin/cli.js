@@ -162,7 +162,7 @@ process.stdin.on('keypress', async (ch, key) => {
       } else if (isLiveMode()) {
         if (getState('currentLiveSelectIndex') >= 99) break;
         if (
-          getState('currentLiveSelectindex') + 1 >
+          getState('currentLiveSelectIndex') + 1 >
           getState('currentPage') * 10 - 1
         ) {
           changeCurrentPage(getState('currentPage') + 1);
@@ -178,7 +178,7 @@ process.stdin.on('keypress', async (ch, key) => {
      */
     case KEY_UP: {
       if (isGameMode()) {
-        if (getState('currentGameSelectIndex') < 0) {
+        if (getState('currentGameSelectIndex') <= 0) {
           changeGameSelectIndex(listLen - 1);
         } else {
           changeGameSelectIndex(getState('currentGameSelectIndex') - 1);
