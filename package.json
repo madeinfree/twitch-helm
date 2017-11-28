@@ -17,8 +17,12 @@
     "dotenv": "^4.0.0",
     "keypress": "^0.2.1",
     "open": "^0.0.5",
-    "ramda": "^0.25.0"
+    "ramda": "^0.25.0",
+    "redux": "^3.7.2"
   },
-  "keywords": ["cli", "twitch"],
+  "keywords": [
+    "cli",
+    "twitch"
+  ],
   "license": "MIT"
 }

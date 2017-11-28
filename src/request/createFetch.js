@@ -7,10 +7,12 @@ const { createRequest, createUserRequest } = require('./createRequest');
  * @param {array} streamList
  * @param {number} currentSelectIndex
  */
-const fetchLiveStream = (streamList, currentSelectIndex) => {
+const fetchLiveStream = (streamList, currentGameSelectIndex) => {
   return new Promise((resolve, reject) => {
     createRequest({
-      url: `/streams?first=100&game_id=${streamList[currentSelectIndex]['_id']}`
+      url: `/streams?first=100&game_id=${
+        streamList[currentGameSelectIndex]['_id']
+      }`
     })
       .then(response => {
         const { data: liveListResponse } = response;
@@ -24,8 +26,7 @@ const fetchLiveStream = (streamList, currentSelectIndex) => {
 
 const fetchLiveStreamUser = (currentShowLiveListSelectIndex, liveList) => {
   return new Promise((resolve, reject) => {
-    const listData = R.path(['data'])(liveList);
-    const user = listData[currentShowLiveListSelectIndex];
+    const user = liveList[currentShowLiveListSelectIndex];
     const user_id = R.path(['user_id'])(user);
     createUserRequest({
       url: `/streams/${user_id}`

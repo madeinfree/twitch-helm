@@ -3,6 +3,15 @@ const open = require('open');
 const R = require('ramda');
 
 /**
+ * redux store
+ */
+const store = require('../src/store/');
+const getState = key => {
+  const state = store.getState();
+  return state[key];
+};
+
+/**
  * Terminal Lib
  */
 require('colors');
@@ -14,7 +23,6 @@ const Table = require('cli-table2');
  * Utils
  */
 const clearTerminal = require('../src/utils/clearTerminal');
-const normalizeLiveStream = require('../src/utils/normalizeLiveStream');
 const {
   fetchLiveStream,
   fetchLiveStreamUser
@@ -47,20 +55,10 @@ const {
 const Null = require('../src/constant/NULL');
 
 /**
- * data
- */
-const streamList = require('../src/streamList');
-
-/**
  * initial state
  */
-let liveList = EMPTY_ARRAY,
-  normalizeListStreamList = EMPTY_ARRAY,
-  currentSelectIndex = 0,
-  currentShowLiveListSelectIndex = 0,
-  currentPage = 1;
-let selectMode = GAME_MODE.GAMELIST;
-const listLen = R.length(streamList);
+let selectMode = getState('gameMode');
+const listLen = R.length(getState('streamList'));
 
 /**
  * helper
@@ -68,20 +66,47 @@ const listLen = R.length(streamList);
 const createLog = require('../src/helper/createLog');
 const showLiveListView = _ => {
   showLiveList({
-    liveList: normalizeListStreamList,
-    currentShowLiveListSelectIndex,
-    currentPage
+    liveList: getState('liveList'),
+    currentShowLiveListSelectIndex: getState('currentLiveSelectIndex'),
+    currentPage: getState('currentPage')
   });
 };
 const changeMode = type => {
-  selectMode = type;
+  store.dispatch({
+    type: 'CHANGE_MODE',
+    payload: type
+  });
+};
+const cacheLiveList = list => {
+  store.dispatch({
+    type: 'CACHE_LIVE_LIST',
+    payload: list.data
+  });
+};
+const changeGameSelectIndex = num => {
+  store.dispatch({
+    type: 'CHANGE_GAME_SELECT_INDEX',
+    payload: num
+  });
+};
+const changeLiveSelectIndex = indexNum => {
+  store.dispatch({
+    type: 'CHANGE_LIVE_SELECT_INDEX',
+    payload: indexNum
+  });
+};
+const changeCurrentPage = pageNum => {
+  store.dispatch({
+    type: 'CHANGE_CURRENT_PAGE_INDEX',
+    payload: pageNum
+  });
 };
 const reset = () => {
-  currentPage = 1;
-  currentShowLiveListSelectIndex = 0;
+  changeCurrentPage(1);
+  changeLiveSelectIndex(0);
 };
-const isGameMode = () => selectMode === GAME_MODE.GAMELIST;
-const isLiveMode = () => selectMode === GAME_MODE.LIVELIST;
+const isGameMode = () => getState('gameMode') === GAME_MODE.GAMELIST;
+const isLiveMode = () => getState('gameMode') === GAME_MODE.LIVELIST;
 const exitProcess = () => process.exit();
 
 /**
@@ -111,19 +136,21 @@ process.stdin.on('keypress', async (ch, key) => {
      */
     case KEY_DOWN: {
       if (isGameMode()) {
-        if (currentSelectIndex + 1 > listLen - 1) {
-          currentSelectIndex = 0;
+        if (getState('currentGameSelectIndex') + 1 > listLen - 1) {
+          changeGameSelectIndex(0);
         } else {
-          currentSelectIndex = currentSelectIndex + 1;
+          changeGameSelectIndex(getState('currentGameSelectIndex') + 1);
         }
       } else if (isLiveMode()) {
-        if (currentShowLiveListSelectIndex >= 99) break;
-        let normalizeListStreamListLen = R.length(normalizeListStreamList);
-        if (currentShowLiveListSelectIndex + 1 > currentPage * 10 - 1) {
-          currentPage = currentPage + 1;
-          currentShowLiveListSelectIndex = currentPage * 10 - 10;
+        if (getState('currentLiveSelectIndex') >= 99) break;
+        if (
+          getState('currentLiveSelectindex') + 1 >
+          getState('currentPage') * 10 - 1
+        ) {
+          changeCurrentPage(getState('currentPage') + 1);
+          changeLiveSelectIndex(getState('currentPage') * 10 - 10);
         } else {
-          currentShowLiveListSelectIndex = currentShowLiveListSelectIndex + 1;
+          changeLiveSelectIndex(getState('currentLiveSelectIndex') + 1);
         }
       }
       break;
@@ -133,19 +160,21 @@ process.stdin.on('keypress', async (ch, key) => {
      */
     case KEY_UP: {
       if (isGameMode()) {
-        if (currentSelectIndex - 1 < 0) {
-          currentSelectIndex = listLen - 1;
+        if (getState('currentGameSelectIndex') < 0) {
+          changeGameSelectIndex(listLen - 1);
         } else {
-          currentSelectIndex = currentSelectIndex - 1;
+          changeGameSelectIndex(getState('currentGameSelectIndex') - 1);
         }
       } else if (isLiveMode()) {
-        if (currentShowLiveListSelectIndex === 0) break;
-        let normalizeListStreamListLen = R.length(normalizeListStreamList);
-        if (currentShowLiveListSelectIndex - 1 < currentPage * 10 - 10) {
-          currentPage = currentPage - 1;
-          currentShowLiveListSelectIndex = currentPage * 10 - 1;
+        if (getState('currentLiveSelectIndex') === 0) break;
+        if (
+          getState('currentLiveSelectIndex') - 1 <
+          getState('currentPage') * 10 - 10
+        ) {
+          changeCurrentPage(getState('currentPage') - 1);
+          changeLiveSelectIndex(getState('currentPage') * 10 - 1);
         } else {
-          currentShowLiveListSelectIndex = currentShowLiveListSelectIndex - 1;
+          changeLiveSelectIndex(getState('currentLiveSelectIndex') - 1);
         }
       }
       break;
@@ -157,16 +186,15 @@ process.stdin.on('keypress', async (ch, key) => {
     case KEY_RIGHT: {
       if (isGameMode()) {
         const liveStreamResponse = await fetchLiveStream(
-          streamList,
-          currentSelectIndex
+          getState('streamList'),
+          getState('currentGameSelectIndex')
         );
         changeMode(GAME_MODE.LIVELIST);
-        liveList = liveStreamResponse;
-        normalizeListStreamList = normalizeLiveStream(liveList);
+        cacheLiveList(liveStreamResponse);
       } else {
         const { url, name } = await fetchLiveStreamUser(
-          currentShowLiveListSelectIndex,
-          liveList
+          getState('currentLiveSelectIndex'),
+          getState('liveList')
         );
         createLog(`打開 ${url} 欣賞「${name}」的技巧吧！`);
         clearTerminal();
@@ -190,13 +218,13 @@ process.stdin.on('keypress', async (ch, key) => {
       if (isGameMode()) {
         break;
       }
-      if (currentPage + 1 > 10) {
-        currentPage = 0;
-        currentShowLiveListSelectIndex = 0;
+      if (getState('currentPage') + 1 > 10) {
+        changeCurrentPage(0);
+        changeLiveSelectIndex(0);
       } else {
-        currentShowLiveListSelectIndex = currentShowLiveListSelectIndex + 10;
+        changeLiveSelectIndex(getState('currentLiveSelectIndex') + 10);
       }
-      currentPage = currentPage + 1;
+      changeCurrentPage(getState('currentPage') + 1);
       break;
     }
     /**
@@ -206,13 +234,13 @@ process.stdin.on('keypress', async (ch, key) => {
       if (isGameMode()) {
         break;
       }
-      if (currentPage - 1 < 1) {
-        currentPage = 11;
-        currentShowLiveListSelectIndex = 90;
+      if (getState('currentPage') - 1 < 1) {
+        changeCurrentPage(11);
+        changeLiveSelectIndex(90);
       } else {
-        currentShowLiveListSelectIndex = currentShowLiveListSelectIndex - 10;
+        changeLiveSelectIndex(getState('currentLiveSelectIndex') - 10);
       }
-      currentPage = currentPage - 1;
+      changeCurrentPage(getState('currentPage') - 1);
       break;
     }
   }
@@ -220,7 +248,7 @@ process.stdin.on('keypress', async (ch, key) => {
    * refresh command line
    */
   if (isGameMode()) {
-    show(currentSelectIndex);
+    show(getState('currentGameSelectIndex'));
   }
   if (isLiveMode()) {
     showLiveListView(Null);
@@ -235,4 +263,4 @@ process.stdin.resume();
  */
 clearTerminal();
 showBanner();
-show(currentSelectIndex);
+show(getState('currentGameSelectIndex'));
