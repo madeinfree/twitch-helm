@@ -1,7 +1,29 @@
+/**
+ * redux store
+ */
 const { createStore } = require('redux');
+
+/**
+ * stream list
+ */
 const streamList = require('../../src/streamList');
+
+/**
+ * constant
+ */
 const { GAMELIST, LIVELIST } = require('../constant/GAME_MODE');
 const { EMPTY_ARRAY } = require('../constant/EMPTY_ARRAY');
+const {
+  CHANGE_MODE,
+  CACHE_LIVE_LIST,
+  CHANGE_GAME_SELECT_INDEX,
+  CHANGE_LIVE_SELECT_INDEX,
+  CHANGE_CURRENT_PAGE_INDEX
+} = require('./constant');
+
+/**
+ * reducer initialState
+ */
 const initialState = {
   streamList,
   gameMode: GAMELIST,
@@ -13,23 +35,23 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'CHANGE_MODE':
+    case CHANGE_MODE:
       return Object.assign({}, state, {
         gameMode: action.payload
       });
-    case 'CACHE_LIVE_LIST':
+    case CACHE_LIVE_LIST:
       return Object.assign({}, state, {
         liveList: action.payload
       });
-    case 'CHANGE_GAME_SELECT_INDEX':
+    case CHANGE_GAME_SELECT_INDEX:
       return Object.assign({}, state, {
         currentGameSelectIndex: action.payload
       });
-    case 'CHANGE_LIVE_SELECT_INDEX':
+    case CHANGE_LIVE_SELECT_INDEX:
       return Object.assign({}, state, {
         currentLiveSelectIndex: action.payload
       });
-    case 'CHANGE_CURRENT_PAGE_INDEX':
+    case CHANGE_CURRENT_PAGE_INDEX:
       return Object.assign({}, state, {
         currentPage: action.payload
       });
