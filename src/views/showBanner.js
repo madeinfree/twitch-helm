@@ -1,7 +1,7 @@
 const CFonts = require('cfonts');
 
 const showBanner = () => {
-  CFonts.say('Welcome Twitch Live', {
+  CFonts.say('Welcome Twitch Helm', {
     font: 'block',
     align: 'center',
     colors: ['blue'],

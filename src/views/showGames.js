@@ -1,7 +1,7 @@
 const streamList = require('../streamList');
 const Table = require('cli-table2');
 
-const show = currentSelectIndex => {
+const showGames = currentSelectIndex => {
   let gameTable = new Table({
     head: ['遊戲名稱', '遊戲簡介'],
     style: {
@@ -22,4 +22,4 @@ const show = currentSelectIndex => {
   console.log(gameTable.toString());
 };
 
-module.exports = show;
+module.exports = showGames;

@@ -32,7 +32,7 @@ const {
 /**
  * views
  */
-const show = require('../src/views/showGames');
+const showGames = require('../src/views/showGames');
 const showLiveList = require('../src/views/showLiveList');
 const showBanner = require('../src/views/showBanner');
 const showSeeyou = require('../src/views/showSeeyou');
@@ -267,7 +267,7 @@ process.stdin.on('keypress', async (ch, key) => {
    * refresh command line
    */
   if (isGameMode()) {
-    show(getState('currentGameSelectIndex'));
+    showGames(getState('currentGameSelectIndex'));
   }
   if (isLiveMode()) {
     showLiveListView(Null);
@@ -282,4 +282,4 @@ process.stdin.resume();
  */
 clearTerminal();
 showBanner();
-show(getState('currentGameSelectIndex'));
+showGames(getState('currentGameSelectIndex'));
