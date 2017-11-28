@@ -7,12 +7,12 @@ const { createRequest, createUserRequest } = require('./createRequest');
  * @param {array} streamList
  * @param {number} currentSelectIndex
  */
-const fetchLiveStream = (streamList, currentGameSelectIndex) => {
+const fetchLiveStream = (streamList, currentGameSelectIndex, language) => {
   return new Promise((resolve, reject) => {
     createRequest({
       url: `/streams?first=100&game_id=${
         streamList[currentGameSelectIndex]['_id']
-      }`
+      }${language}`
     })
       .then(response => {
         const { data: liveListResponse } = response;

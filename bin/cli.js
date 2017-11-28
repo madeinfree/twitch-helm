@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 const open = require('open');
 const R = require('ramda');
+const program = require('commander');
 
 /**
  * redux store
@@ -117,6 +118,16 @@ const isLiveMode = () => getState('gameMode') === GAME_MODE.LIVELIST;
 const exitProcess = () => process.exit();
 
 /**
+ * commander
+ */
+program
+  .version('0.2.0')
+  .option('-lan, --language [value]', 'choose live stream language')
+  .parse(process.argv);
+const language =
+  typeof program.language === 'string' ? `&language=${program.language}` : '';
+
+/**
  * initial keypress
  */
 keypress(process.stdin);
@@ -194,7 +205,8 @@ process.stdin.on('keypress', async (ch, key) => {
       if (isGameMode()) {
         const liveStreamResponse = await fetchLiveStream(
           getState('streamList'),
-          getState('currentGameSelectIndex')
+          getState('currentGameSelectIndex'),
+          language
         );
         changeMode(GAME_MODE.LIVELIST);
         cacheLiveList(liveStreamResponse);

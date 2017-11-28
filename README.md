@@ -23,16 +23,43 @@ your love streamer, enjoy!
 
 # Uses
 
+installation
+
 ```command
 $ npm install twitch-helm -g
-$ twitch
 ```
 
-# Alias
+basic
 
+```command
+twitch
 ```
-$ alias twc=twitch
+
+options, see below Options
+
+```command
+twitch [,...options]
 ```
+
+# Options
+
+### --language, -lan
+
+use language option can specified stream player language and default is total
+stream player.
+
+```command
+twitch --language en
+```
+
+# Contributing
+
+Have any improve, idea, issue or features ? PR super welcome ; )
+
+* star ⭐️ and fork this repository first
+* `git clone https://github.com/yourfork/twitch-helm.git && cd twitch-helm`
+* `yarn`
+* `node ./bin/cli.js`
 
 # License
 
