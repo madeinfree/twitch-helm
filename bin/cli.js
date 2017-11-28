@@ -1,4 +1,5 @@
 #! /usr/bin/env node
+const util = require('util');
 const open = require('open');
 const R = require('ramda');
 const program = require('commander');
@@ -94,8 +95,9 @@ program
   .version('0.2.0')
   .option('-lan, --language [value]', 'choose live stream language')
   .parse(process.argv);
-const language =
-  typeof program.language === 'string' ? `&language=${program.language}` : '';
+const language = util.isString(program.language)
+  ? `&language=${program.language}`
+  : '';
 
 /**
  * initial keypress
