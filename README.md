@@ -7,11 +7,11 @@ your love streamer, enjoy!
 
 ### Find your live stream games.
 
-![screenShot](https://i.imgur.com/DmHMSnK.png)
+![screenShot](https://i.imgur.com/scmmNPe.png)
 
 ### Choose your live stream player
 
-![search](https://i.imgur.com/16l7nFs.png)
+![search](https://i.imgur.com/OXun0lY.png)
 
 ### Open live stream website
 
