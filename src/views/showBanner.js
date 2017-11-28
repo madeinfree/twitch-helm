@@ -12,7 +12,7 @@ const showBanner = () => {
     maxLength: '0'
   });
   console.log(
-    '【確認：右方向鍵(->) 或 Enter】   【選擇：上方向鍵(^)、下方向鍵(v)】   【返回：左方向鍵(<-)】   【上一頁/下一頁：鍵盤(p)/鍵盤(n)】   【關閉：Ctrl + c】'
+    '【Return：key-right(->) or Enter】   【Choose：key-up(^)、key-down(v)】   【Back：key-left(<-)】   【previous/next：key-p/key-n】   【Exit：Ctrl + c】'
   );
   console.log('\n');
 };

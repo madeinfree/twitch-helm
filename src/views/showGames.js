@@ -3,7 +3,7 @@ const Table = require('cli-table2');
 
 const showGames = currentSelectIndex => {
   let gameTable = new Table({
-    head: ['遊戲名稱', '遊戲簡介'],
+    head: ['Game', 'Description'],
     style: {
       head: {
         color: '#fff'
