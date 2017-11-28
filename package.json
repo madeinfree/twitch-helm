@@ -8,6 +8,9 @@
     "type": "git",
     "url": "https://github.com/madeinfree/twitch-helm"
   },
+  "scripts": {
+    "prettier": "prettier"
+  },
   "author": "Whien_Liou <sal95610@gmail.com>",
   "dependencies": {
     "axios": "^0.17.1",
@@ -22,5 +25,8 @@
     "redux": "^3.7.2"
   },
   "keywords": ["cli", "twitch"],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^1.8.2"
+  }
 }
