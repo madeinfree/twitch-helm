@@ -26,7 +26,7 @@ const {
 require('colors');
 const keypress = require('keypress');
 const CFonts = require('cfonts');
-const Table = require('cli-table2');
+const Table = require('cli-table3');
 
 /**
  * Utils

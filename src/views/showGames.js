@@ -1,5 +1,5 @@
 const streamList = require('../streamList');
-const Table = require('cli-table2');
+const Table = require('cli-table3');
 
 const showGames = currentSelectIndex => {
   let gameTable = new Table({
